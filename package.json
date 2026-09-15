@@ -36,10 +36,19 @@
     "check": "npm run typecheck && npm test && npm run check:tokens",
     "check:tokens": "node scripts/check-token-contract.mjs"
   },
+  "//devDependencies": "The peers are duplicated here on purpose: `npm install` does not install OPTIONAL peer dependencies, so without these the standalone typecheck cannot resolve highlight.js/mermaid/react-virtual and CI fails on a package that is actually fine. Versions mirror the osionos host so the standalone check sees what the host sees.",
   "devDependencies": {
     "typescript": "^5.9.3",
     "@types/node": "^22.10.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0"
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@tanstack/react-virtual": "^3.13.24",
+    "@univers42/ui-collection": "^2.5.1",
+    "highlight.js": "^11.11.1",
+    "lucide-react": "^0.546.0",
+    "mermaid": "^11.15.0",
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
+    "zustand": "^5.0.3"
   }
 }
