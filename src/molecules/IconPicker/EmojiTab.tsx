@@ -14,7 +14,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { EMOJI_ITEMS, filterEmojiItems, type EmojiItem } from "../EmojiPicker/emojiSearch";
 import { loadEmojiCatalog, type EmojiCatalog } from "../EmojiPicker/emojiCatalog";
 import { applyEmojiTone, EMOJI_SKIN_TONES } from "../../shared/emojiTone";
-import { filterRenderableEmoji } from "../../shared/emojiRenderable";
 import { VirtualGrid, type GridSection } from "./VirtualRows";
 
 const TONE_STORAGE_KEY = "osio.emoji.tone";
@@ -56,13 +55,7 @@ export const EmojiTab: React.FC<{ query: string; bg?: string; onPick: (emoji: st
     const toned = tone > 0
       ? source.map((item) => (item.toneCapable ? { ...item, value: applyEmojiTone(item.value, tone) } : item))
       : source;
-    // Hide what this device cannot draw. The catalog is the full RGI set
-    // (Unicode 17.0) but an OS emoji font trails the standard — measured here,
-    // 16.0/17.0 glyphs paint tofu — and picking a smiley that inserts a hollow
-    // rectangle is worse than not offering it. Runs after toning, because a
-    // tone modifier changes the glyph that must actually exist.
-    const drawable = filterRenderableEmoji(toned, (item) => item.value);
-    const filtered = filterEmojiItems(drawable, query);
+    const filtered = filterEmojiItems(toned, query);
     if (query.trim()) return [{ items: filtered }];
     const groups = catalog?.groups ?? [...new Set(filtered.map((item) => item.group ?? ""))];
     return groupSections(filtered, groups);
