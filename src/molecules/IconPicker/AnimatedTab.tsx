@@ -29,9 +29,36 @@ export function notoAnimatedUrl(cp: string): string {
   return `${NOTO_ANIMATED_BASE}/${cp}/512.webp`;
 }
 
-/** Google Noto animated-emoji grid (~880, virtualized). Picking stores the asset
- *  URL as a regular `img:` icon, so it animates everywhere icons render. Previews
- *  load lazily from fonts.gstatic.com — offline they simply stay blank. */
+function notoStaticUrl(cp: string): string {
+  return `${NOTO_ANIMATED_BASE}/${cp}/emoji.svg`;
+}
+
+/** One grid cell. It shows the static SVG and swaps to the animation only while
+ *  hovered or focused. The animated file is ~330 KB and decodes at 512x512 per
+ *  frame: as the 26px thumbnail of ~120 mounted cells it cost 58 MB and +660 MB
+ *  of browser memory just to open the tab, 303 MB to scroll to the end (measured;
+ *  the static set is 6 MB for all 878). */
+const AnimatedTile: React.FC<{ item: AnimatedEmoji; onPick: (url: string) => void }> = ({ item, onPick }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  return (
+    <button
+      type="button"
+      title={item.name}
+      onClick={() => onPick(notoAnimatedUrl(item.cp))}
+      onPointerEnter={() => setIsPlaying(true)}
+      onPointerLeave={() => setIsPlaying(false)}
+      onFocus={() => setIsPlaying(true)}
+      onBlur={() => setIsPlaying(false)}
+      className="flex h-8 w-8 items-center justify-center rounded-md transition-colors duration-[120ms] hover:bg-[var(--osio-bg-hover)]"
+    >
+      <img src={isPlaying ? notoAnimatedUrl(item.cp) : notoStaticUrl(item.cp)} alt={item.name} width={26} height={26} loading="lazy" draggable={false} />
+    </button>
+  );
+};
+
+/** Google Noto animated-emoji grid (~880, virtualized). Picking stores the
+ *  animated asset URL as a regular `img:` icon, so it animates everywhere icons
+ *  render. Previews load lazily from fonts.gstatic.com — offline they stay blank. */
 export const AnimatedTab: React.FC<{ query: string; onPick: (url: string) => void }> = ({ query, onPick }) => {
   const [scroller, setScroller] = useState<HTMLDivElement | null>(null);
 
@@ -50,17 +77,7 @@ export const AnimatedTab: React.FC<{ query: string; onPick: (url: string) => voi
         scrollElement={scroller}
         sections={sections}
         perRow={8}
-        renderItem={(item) => (
-          <button
-            key={item.cp}
-            type="button"
-            title={item.name}
-            onClick={() => onPick(notoAnimatedUrl(item.cp))}
-            className="flex h-8 w-8 items-center justify-center rounded-md transition-colors duration-[120ms] hover:bg-[var(--osio-bg-hover)]"
-          >
-            <img src={notoAnimatedUrl(item.cp)} alt={item.name} width={26} height={26} loading="lazy" draggable={false} />
-          </button>
-        )}
+        renderItem={(item) => <AnimatedTile key={item.cp} item={item} onPick={onPick} />}
       />
     </div>
   );
