@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// The picker (emoji list, icon catalog, color board, asset tabs - ~130 KB with its ui-collection
-// data) is off the boot path: it loads once the browser is idle, so the first open does not wait
-// on it either.
+// The picker (emoji list, color swatches, virtual list: ~116 KB beyond what boot already loaded,
+// production build 2026-10-13) is off the boot path: it loads once the browser is idle, so the
+// first open does not wait on it either.
 import React, { Suspense } from "react";
 import type { IconPicker as EagerIconPicker } from "./IconPicker";
 
