@@ -105,6 +105,10 @@
   --osio-control-h-md: 32px;
   --osio-control-h-sm: 28px;
 
+  /* Typography */
+  --osio-font-size-3xs: 10px;
+  --osio-font-size-xs: 12px;
+
   /* Layering */
   --osio-z-modal: 50;
   --osio-z-toast: 60;

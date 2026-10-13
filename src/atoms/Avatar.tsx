@@ -13,7 +13,7 @@ export interface AvatarProps {
 }
 
 const SIZE_CLASS: Record<AvatarSize, string> = {
-  xs: "h-5 w-5 text-xs",
+  xs: "h-5 w-5 text-[length:var(--osio-font-size-3xs)]",
   sm: "h-6 w-6 text-xs",
   md: "h-8 w-8 text-sm",
   lg: "h-10 w-10 text-base",
