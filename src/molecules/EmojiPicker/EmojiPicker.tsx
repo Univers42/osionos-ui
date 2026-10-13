@@ -14,4 +14,4 @@
 // the rebuilt IconPicker — Emoji · Icons (lucide) · Custom SVG, with a per-asset color — so the
 // whole app's icon picking upgrades through this one alias. Same props (current/onSelect/onRemove/
 // onClose), so no call site changes. Render the value with <IconValueView/> to show icon/SVG/color.
-export { IconPicker as EmojiPicker } from "../IconPicker";
+export { IconPicker as EmojiPicker } from "../IconPicker/LazyIconPicker";
