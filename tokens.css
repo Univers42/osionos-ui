@@ -80,7 +80,6 @@
   --osio-radius-chip: var(--osio-radius-sm);
   --osio-radius-control: var(--osio-radius);
   --osio-radius-lg: 12px;
-  --osio-radius-overlay: var(--osio-radius-lg);
   --osio-radius-panel: var(--osio-radius-lg);
   --osio-radius-xs: 4px;
 
@@ -104,6 +103,25 @@
   --osio-control-h-lg: 40px;
   --osio-control-h-md: 32px;
   --osio-control-h-sm: 28px;
+  --osio-control-h-xs: 24px;
+
+  /* Component tokens — one set of knobs per kind of surface */
+  --osio-overlay-bg: var(--osio-bg-elevated);
+  --osio-overlay-border: var(--osio-border-default);
+  --osio-overlay-padding: 4px;
+  --osio-overlay-radius: var(--osio-radius-lg);
+  --osio-overlay-shadow: var(--osio-e3);
+  --osio-control-bg-hover: var(--osio-bg-hover);
+  --osio-control-border: var(--osio-border-default);
+  --osio-control-radius: var(--osio-radius-control);
+  --osio-field-bg: var(--osio-bg-surface);
+  --osio-field-border: var(--osio-border-strong);
+  --osio-field-border-focus: var(--osio-accent);
+  --osio-field-h: var(--osio-control-h-md);
+  --osio-field-radius: var(--osio-radius-control);
+  --osio-tooltip-bg: var(--osio-fg-strong);
+  --osio-tooltip-fg: var(--osio-bg-surface);
+  --osio-tooltip-radius: var(--osio-radius-chip);
 
   /* Layering */
   --osio-z-modal: 50;

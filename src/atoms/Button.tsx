@@ -31,18 +31,18 @@ const SIZE_CLASS: Record<ButtonSize, string> = {
 
 const TONE_CLASS: Record<ButtonTone, string> = {
   default:
-    "border border-[var(--osio-border-default)] bg-[var(--osio-bg-surface)] text-[var(--osio-fg-default)] hover:bg-[var(--osio-bg-hover)] hover:border-[var(--osio-border-strong)]",
+    "border border-[var(--osio-control-border)] bg-[var(--osio-bg-surface)] text-[var(--osio-fg-default)] hover:bg-[var(--osio-control-bg-hover)] hover:border-[var(--osio-border-strong)]",
   primary:
     "bg-[var(--osio-accent)] text-[var(--osio-accent-fg)] shadow-[var(--osio-e1)] hover:bg-[var(--osio-accent-hover)] hover:shadow-[var(--osio-e2)]",
   danger:
     "bg-[var(--osio-danger)] text-[var(--osio-accent-fg)] shadow-[var(--osio-e1)] hover:bg-[var(--osio-danger-hover)] hover:shadow-[var(--osio-e2)]",
-  ghost: "text-[var(--osio-fg-muted)] hover:bg-[var(--osio-bg-hover)] hover:text-[var(--osio-fg-default)]",
+  ghost: "text-[var(--osio-fg-muted)] hover:bg-[var(--osio-control-bg-hover)] hover:text-[var(--osio-fg-default)]",
 };
 
 // Shared base: semantic control radius, token-driven motion, tactile press
 // (scale via spring), one focus-ring spec. Press is disabled when disabled.
 const BASE =
-  "inline-flex select-none items-center justify-center rounded-[var(--osio-radius-control)] font-medium " +
+  "inline-flex select-none items-center justify-center rounded-[var(--osio-control-radius)] font-medium " +
   "transition-[background-color,border-color,color,box-shadow,transform] duration-[var(--osio-dur-fast)] ease-[var(--osio-ease-standard)] " +
   "active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--osio-focus-ring-color)] " +
   "focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--osio-bg-page)] " +

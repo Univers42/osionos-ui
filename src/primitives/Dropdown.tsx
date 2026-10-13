@@ -30,7 +30,21 @@ interface DropdownProps<T extends string> {
   placeholder?: string;
   align?: "start" | "end";
   width?: number | "trigger" | "auto";
+  /** Accessible name of the trigger; without it the shown value names it. */
+  label?: string;
+  /** "inline" drops the border and background so the trigger sits in a row of text. */
+  variant?: "field" | "inline";
 }
+
+const TRIGGER_BASE =
+  "inline-flex items-center justify-between gap-2 text-sm text-[var(--osio-fg-default)] transition-[color,background-color,border-color,box-shadow] duration-[var(--osio-dur-fast)] ease-[var(--osio-ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--osio-focus-ring-color)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--osio-bg-page)] disabled:cursor-not-allowed disabled:opacity-60";
+
+const TRIGGER_VARIANT = {
+  field:
+    "h-[var(--osio-field-h)] rounded-[var(--osio-field-radius)] border border-[var(--osio-field-border)] bg-[var(--osio-field-bg)] px-3 font-medium hover:bg-[var(--osio-control-bg-hover)] focus-visible:border-[var(--osio-field-border-focus)]",
+  inline:
+    "h-[var(--osio-control-h-sm)] max-w-full rounded-[var(--osio-control-radius)] bg-transparent px-1.5 hover:bg-[var(--osio-control-bg-hover)]",
+} as const;
 
 const VIEWPORT_PAD = 8;
 const DEFAULT_MENU_WIDTH = 260;
@@ -56,6 +70,8 @@ export function Dropdown<T extends string>({
   placeholder = "Select",
   align = "start",
   width = "trigger",
+  label,
+  variant = "field",
 }: Readonly<DropdownProps<T>>) {
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -227,8 +243,9 @@ export function Dropdown<T extends string>({
         aria-controls={open ? listboxId : undefined}
         aria-expanded={open}
         aria-haspopup="listbox"
+        aria-label={label}
         disabled={disabled}
-        className="inline-flex h-[var(--osio-control-h-md)] items-center justify-between gap-2 rounded-[var(--osio-radius-control)] border border-[var(--osio-border-default)] bg-[var(--osio-bg-surface)] px-3 text-sm font-medium text-[var(--osio-fg-default)] transition-[color,background-color,border-color,box-shadow] duration-[var(--osio-dur-fast)] ease-[var(--osio-ease-standard)] hover:border-[var(--osio-border-strong)] hover:bg-[var(--osio-bg-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--osio-focus-ring-color)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--osio-bg-page)] disabled:cursor-not-allowed disabled:opacity-60"
+        className={`${TRIGGER_BASE} ${TRIGGER_VARIANT[variant]}`}
         onClick={() => (open ? closeMenu() : openMenu())}
         onKeyDown={handleTriggerKeyDown}
       >
@@ -241,9 +258,14 @@ export function Dropdown<T extends string>({
           id={listboxId}
           role="listbox"
           tabIndex={-1}
-          className="overflow-y-auto rounded-[var(--osio-radius-overlay)] border border-[var(--osio-border-default)] bg-[var(--osio-bg-elevated)] py-1 shadow-[var(--osio-e3)] outline-none animate-[osio-pop-in_var(--osio-dur-fast)_var(--osio-ease-emphasized)]"
+          className="overflow-y-auto rounded-[var(--osio-overlay-radius)] border border-[var(--osio-overlay-border)] bg-[var(--osio-overlay-bg)] p-[var(--osio-overlay-padding)] shadow-[var(--osio-overlay-shadow)] outline-none animate-[osio-pop-in_var(--osio-dur-fast)_var(--osio-ease-emphasized)]"
           style={menuStyle}
           onKeyDown={handleMenuKeyDown}
+          // The list is portaled to <body>, outside any menu this dropdown sits
+          // in, so a parent's document-level mousedown "click outside" handler
+          // would close that menu — and unmount this list — before the option's
+          // click lands.
+          onMouseDown={(event) => event.stopPropagation()}
         >
           {options.map((option, index) => (
             <button
@@ -253,7 +275,7 @@ export function Dropdown<T extends string>({
               role="option"
               aria-selected={option.value === value}
               disabled={option.disabled}
-              className="flex w-full items-start gap-2 rounded-[var(--osio-radius-control)] px-3 py-2 text-left text-sm text-[var(--osio-fg-default)] outline-none transition-colors duration-[var(--osio-dur-fast)] ease-[var(--osio-ease-standard)] hover:bg-[var(--osio-bg-hover)] focus-visible:bg-[var(--osio-bg-hover)] aria-selected:bg-[var(--osio-bg-muted)] aria-selected:text-[var(--osio-fg-strong)] disabled:cursor-not-allowed disabled:text-[var(--osio-fg-subtle)] disabled:hover:bg-transparent"
+              className="flex w-full items-start gap-2 rounded-[var(--osio-control-radius)] px-3 py-2 text-left text-sm text-[var(--osio-fg-default)] outline-none transition-colors duration-[var(--osio-dur-fast)] ease-[var(--osio-ease-standard)] hover:bg-[var(--osio-control-bg-hover)] focus-visible:bg-[var(--osio-control-bg-hover)] aria-selected:bg-[var(--osio-bg-muted)] aria-selected:text-[var(--osio-fg-strong)] disabled:cursor-not-allowed disabled:text-[var(--osio-fg-subtle)] disabled:hover:bg-transparent"
               onClick={() => choose(index)}
             >
               {option.icon ? <span className="mt-0.5 shrink-0 text-[var(--osio-fg-muted)]">{option.icon}</span> : null}
