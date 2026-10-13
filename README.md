@@ -13,7 +13,7 @@ single `if (theme === …)` in component code.
 That makes the token set a real dependency, and an invisible one — so it is
 declared, not assumed:
 
-- **`tokens.css`** lists all 58 properties the kit reads, with reference light
+- **`tokens.css`** lists every property the kit reads, with reference light
   values. Import it to get a working look out of the box, or ignore it and
   define the tokens yourself.
 - **`scripts/check-token-contract.mjs`** fails the build if a component starts
@@ -44,8 +44,8 @@ catalogs (~2.8k generated lines) all load lazily at runtime.
 ## Layout
 
 ```
-src/atoms/        Button, Badge, Card, Input, IconButton, IconValueView, …
-src/primitives/   Modal, Menu, Popover, Dropdown, Toggle, MiniTabs, toasts
+src/atoms/        Button, Badge, Card, Input, IconButton, Kbd, Avatar, IconValueView, …
+src/primitives/   Modal, Menu, Popover, Dropdown, Toggle, Checkbox, Tooltip, MiniTabs, toasts
 src/molecules/    IconPicker, EmojiPicker, MermaidDiagram, ConfirmDialog, …
 src/hooks/        useClickOutside, useEscapeKey, viewport positioning
 src/shared/       cx, icon-value parse/serialize, emoji skin tones (pure)
