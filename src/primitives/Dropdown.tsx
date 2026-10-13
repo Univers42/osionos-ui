@@ -14,6 +14,9 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom";
 import { Check, ChevronDown } from "lucide-react";
 
+import { menuPlacement, showsValue, type MenuWidth } from "./dropdownLayout";
+import { TRIGGER_BASE, TRIGGER_VARIANT } from "./dropdownStyles";
+
 export interface DropdownOption<T extends string> {
   value: T;
   label: string;
@@ -29,28 +32,11 @@ interface DropdownProps<T extends string> {
   disabled?: boolean;
   placeholder?: string;
   align?: "start" | "end";
-  width?: number | "trigger" | "auto";
+  width?: MenuWidth;
   /** Accessible name of the trigger; without it the shown value names it. */
   label?: string;
-  /** "inline" drops the border and background so the trigger sits in a row of text. */
-  variant?: "field" | "inline";
-}
-
-const TRIGGER_BASE =
-  "inline-flex items-center justify-between gap-2 text-sm text-[var(--osio-fg-default)] transition-[color,background-color,border-color,box-shadow] duration-[var(--osio-dur-fast)] ease-[var(--osio-ease-standard)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--osio-focus-ring-color)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--osio-bg-page)] disabled:cursor-not-allowed disabled:opacity-60";
-
-const TRIGGER_VARIANT = {
-  field:
-    "h-[var(--osio-field-h)] rounded-[var(--osio-field-radius)] border border-[var(--osio-field-border)] bg-[var(--osio-field-bg)] px-3 font-medium hover:bg-[var(--osio-control-bg-hover)] focus-visible:border-[var(--osio-field-border-focus)]",
-  inline:
-    "h-[var(--osio-control-h-sm)] max-w-full rounded-[var(--osio-control-radius)] bg-transparent px-1.5 hover:bg-[var(--osio-control-bg-hover)]",
-} as const;
-
-const VIEWPORT_PAD = 8;
-const DEFAULT_MENU_WIDTH = 260;
-
-function clamp(value: number, min: number, max: number) {
-  return Math.max(min, Math.min(value, max));
+  /** "inline" drops the border and background so the trigger sits in a row of text; "chip" shows the value as a pill. */
+  variant?: "field" | "inline" | "chip";
 }
 
 function enabledOptionIndex<T extends string>(options: DropdownOption<T>[], start: number, direction: 1 | -1) {
@@ -85,37 +71,18 @@ export function Dropdown<T extends string>({
   const listboxId = useMemo(() => `dropdown-${crypto.randomUUID()}`, []);
   const selectedOption = options[selectedIndex];
   // An option whose value is "" means "nothing chosen" and shows the placeholder, muted.
-  const hasValue = selectedOption !== undefined && selectedOption.value !== "";
+  const hasValue = showsValue(selectedOption);
 
   const updatePosition = useCallback(() => {
     const trigger = triggerRef.current;
     if (!trigger) return;
-    const rect = trigger.getBoundingClientRect();
-    const viewportWidth = globalThis.innerWidth;
-    const viewportHeight = globalThis.innerHeight;
-    let resolvedWidth = DEFAULT_MENU_WIDTH;
-    if (width === "trigger") {
-      resolvedWidth = rect.width;
-    } else if (typeof width === "number") {
-      resolvedWidth = width;
-    }
-    const maxHeight = Math.min(360, viewportHeight - VIEWPORT_PAD * 2);
-    const belowTop = rect.bottom + 6;
-    const aboveTop = rect.top - maxHeight - 6;
-    const top = belowTop + maxHeight > viewportHeight - VIEWPORT_PAD && aboveTop > VIEWPORT_PAD
-      ? aboveTop
-      : clamp(belowTop, VIEWPORT_PAD, viewportHeight - maxHeight - VIEWPORT_PAD);
-    const preferredLeft = align === "end" ? rect.right - resolvedWidth : rect.left;
-    setMenuStyle({
-      position: "fixed",
-      top,
-      left: clamp(preferredLeft, VIEWPORT_PAD, viewportWidth - resolvedWidth - VIEWPORT_PAD),
-      width: width === "auto" ? undefined : resolvedWidth,
-      minWidth: width === "auto" ? rect.width : undefined,
-      maxHeight,
-      opacity: 1,
-      zIndex: 10003,
-    });
+    const placement = menuPlacement(
+      trigger.getBoundingClientRect(),
+      { width: globalThis.innerWidth, height: globalThis.innerHeight },
+      width,
+      align,
+    );
+    setMenuStyle({ position: "fixed", ...placement, opacity: 1, zIndex: 10003 });
   }, [align, width]);
 
   const openMenu = useCallback(() => {
