@@ -57,10 +57,20 @@
   --osio-code-header-bg: rgba(255, 255, 255, 0.025);
 
   /* Block tints */
+  --osio-block-tint-blue-bg: #E4EEF3;
+  --osio-block-tint-blue-fg: #1F6FB2;
+  --osio-block-tint-brown-bg: #F1E7DD;
+  --osio-block-tint-brown-fg: #7A4A2B;
   --osio-block-tint-gray-bg: #F0EEE6;
   --osio-block-tint-gray-fg: #6B6862;
   --osio-block-tint-green-bg: #E5EFDF;
   --osio-block-tint-green-fg: #287D3C;
+  --osio-block-tint-orange-bg: #FAEAD9;
+  --osio-block-tint-orange-fg: #B45309;
+  --osio-block-tint-pink-bg: #F4E6EC;
+  --osio-block-tint-pink-fg: #A84A78;
+  --osio-block-tint-purple-bg: #ECE7F3;
+  --osio-block-tint-purple-fg: #7156A5;
   --osio-block-tint-red-bg: #F6E5E1;
   --osio-block-tint-red-fg: #B42318;
   --osio-block-tint-yellow-bg: #F7EFCF;
@@ -72,6 +82,7 @@
   --osio-radius-lg: 12px;
   --osio-radius-overlay: var(--osio-radius-lg);
   --osio-radius-panel: var(--osio-radius-lg);
+  --osio-radius-xs: 4px;
 
   /* Elevation & shadow */
   --osio-e1: 0 1px 2px rgba(40, 33, 24, 0.05), 0 1px 1px rgba(40, 33, 24, 0.03);
@@ -96,4 +107,5 @@
 
   /* Layering */
   --osio-z-modal: 50;
+  --osio-z-toast: 60;
 }
