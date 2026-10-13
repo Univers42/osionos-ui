@@ -61,6 +61,7 @@ export const SidebarSection: React.FC<SidebarSectionProps> = ({
           {onMore ? (
             <IconButton
               size="xs"
+              label="Open menu"
               title="Open menu"
               onClick={(event) => {
                 event.stopPropagation();
@@ -73,6 +74,7 @@ export const SidebarSection: React.FC<SidebarSectionProps> = ({
           {onAdd ? (
             <IconButton
               size="xs"
+              label={`Add to ${label}`}
               title={`Add to ${label}`}
               onClick={(event) => {
                 event.stopPropagation();

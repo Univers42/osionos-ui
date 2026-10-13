@@ -82,7 +82,7 @@ const TooltipBubble: React.FC<TooltipBubbleProps> = ({ id, label, side, anchorRe
       role="tooltip"
       id={id}
       style={{ position: "fixed", top: placement?.top ?? 0, left: placement?.left ?? 0, visibility: placement ? "visible" : "hidden" }}
-      className="pointer-events-none z-[var(--osio-z-toast)] max-w-xs rounded-[var(--osio-radius-chip)] bg-[var(--osio-fg-strong)] px-2 py-1 text-xs text-[var(--osio-bg-surface)] shadow-[var(--osio-e3)]"
+      className="pointer-events-none z-[var(--osio-z-toast)] max-w-xs rounded-[var(--osio-tooltip-radius)] bg-[var(--osio-tooltip-bg)] px-2 py-1 text-xs text-[var(--osio-tooltip-fg)] shadow-[var(--osio-e3)]"
     >
       {label}
     </div>,
