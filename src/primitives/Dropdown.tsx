@@ -84,6 +84,8 @@ export function Dropdown<T extends string>({
   const typeAheadTimerRef = useRef<ReturnType<typeof globalThis.setTimeout> | null>(null);
   const listboxId = useMemo(() => `dropdown-${crypto.randomUUID()}`, []);
   const selectedOption = options[selectedIndex];
+  // An option whose value is "" means "nothing chosen" and shows the placeholder, muted.
+  const hasValue = selectedOption !== undefined && selectedOption.value !== "";
 
   const updatePosition = useCallback(() => {
     const trigger = triggerRef.current;
@@ -205,6 +207,10 @@ export function Dropdown<T extends string>({
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (event.key === "Escape") {
         event.preventDefault();
+        // The list is portaled to <body>; without this the keydown reaches a
+        // parent menu's document-level Escape handler, which closes that menu
+        // too and strands focus on an unmounted trigger.
+        event.stopPropagation();
         closeMenu();
         triggerRef.current?.focus();
       } else if (event.key === "ArrowDown") {
@@ -249,7 +255,9 @@ export function Dropdown<T extends string>({
         onClick={() => (open ? closeMenu() : openMenu())}
         onKeyDown={handleTriggerKeyDown}
       >
-        <span className="truncate">{selectedOption?.label ?? placeholder}</span>
+        <span className={`truncate${hasValue ? "" : " text-[var(--osio-fg-subtle)]"}`}>
+          {hasValue ? selectedOption.label : placeholder}
+        </span>
         <ChevronDown size={14} className="shrink-0 text-[var(--osio-fg-muted)]" />
       </button>
       {open && typeof document !== "undefined" ? createPortal(

@@ -105,7 +105,9 @@
   --osio-control-h-sm: 28px;
   --osio-control-h-xs: 24px;
 
-  /* Component tokens — one set of knobs per kind of surface */
+  /* Component tokens — one set of knobs per kind of surface. Fallbacks for the
+     host's recipes.css: the same values, aliased through the radius tokens the
+     kit declares (it declares neither radius-overlay nor radius-sm). */
   --osio-overlay-bg: var(--osio-bg-elevated);
   --osio-overlay-border: var(--osio-border-default);
   --osio-overlay-padding: 4px;
