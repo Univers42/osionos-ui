@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { menuPlacement, showsValue, VIEWPORT_PAD } from '../src/primitives/dropdownLayout.ts';
+import { menuPlacement, showsValue, triggerMoved, VIEWPORT_PAD } from '../src/primitives/dropdownLayout.ts';
 
 const PHONE = { width: 390, height: 844 };
 const DESKTOP = { width: 1440, height: 900 };
@@ -33,10 +33,27 @@ test('a numeric width is clamped by that width', () => {
   assert.equal(placement.width, 260);
 });
 
-test('the list opens above the trigger when there is no room below', () => {
+// Anchored by its bottom edge: a short list sits right above the trigger
+// instead of where a list of the maximum height would start.
+test('the list opens above the trigger when there is no room below, hugging it', () => {
   const low = { left: 100, right: 200, top: 800, bottom: 828, width: 100 };
   const placement = menuPlacement(low, DESKTOP, 'trigger', 'start');
-  assert.equal(placement.top, 800 - placement.maxHeight - 6);
+  assert.equal(placement.top, undefined);
+  assert.equal(placement.bottom, 900 - 800 + 6);
+});
+
+test('a list with room below opens below the trigger', () => {
+  const placement = menuPlacement(TRIGGER, PHONE, 'trigger', 'start');
+  assert.equal(placement.top, 328 + 6);
+  assert.equal(placement.bottom, undefined);
+});
+
+test('a scroll that left the trigger in place does not count as a move', () => {
+  const at = { left: 10, right: 110, top: 200, bottom: 228, width: 100 };
+  assert.equal(triggerMoved(at, { ...at }), false);
+  assert.equal(triggerMoved(at, { ...at, top: 200.4, bottom: 228.4 }), false);
+  assert.equal(triggerMoved(at, { ...at, top: 180, bottom: 208 }), true);
+  assert.equal(triggerMoved(at, { ...at, left: 30, right: 130 }), true);
 });
 
 test('an empty-string option shows the placeholder, a real one shows its label', () => {

@@ -14,7 +14,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom";
 import { Check, ChevronDown } from "lucide-react";
 
-import { menuPlacement, showsValue, type MenuWidth } from "./dropdownLayout";
+import { menuPlacement, showsValue, triggerMoved, type MenuWidth } from "./dropdownLayout";
 import { TRIGGER_BASE, TRIGGER_VARIANT } from "./dropdownStyles";
 
 export interface DropdownOption<T extends string> {
@@ -137,9 +137,12 @@ export function Dropdown<T extends string>({
       if (menuRef.current?.contains(target) || triggerRef.current?.contains(target)) return;
       closeMenu();
     };
+    const openedAt = triggerRef.current?.getBoundingClientRect();
     const handleScroll = (event: Event) => {
       const target = event.target as Node;
       if (menuRef.current?.contains(target)) return;
+      const now = triggerRef.current?.getBoundingClientRect();
+      if (openedAt && now && !triggerMoved(openedAt, now)) return;
       closeMenu();
     };
     const handleResize = () => updatePosition();
