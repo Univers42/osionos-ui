@@ -44,7 +44,7 @@ export const SidebarSection: React.FC<SidebarSectionProps> = ({
           onClick={() => setOpen((current) => !current)}
           className="-mx-1.5 flex h-full min-w-0 flex-1 items-center gap-1 rounded-[6px] px-1.5 hover:bg-[var(--osio-bg-hover)]"
         >
-          <span className="truncate text-xs font-medium leading-none text-[var(--osio-fg-subtle)]">
+          <span className="truncate text-[length:var(--osio-font-size-xs)] font-medium normal-case leading-none tracking-normal text-[var(--osio-fg-muted)]">
             {label}
           </span>
           <ChevronDown
