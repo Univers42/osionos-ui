@@ -12,7 +12,7 @@
 
 import React, { Suspense } from "react";
 import { AssetRenderer } from "@univers42/ui-collection";
-import { parseIconValue } from "../../shared/iconValue";
+import { assetRendererValue, parseIconValue } from "../../shared/iconValue";
 
 // Lucide rendering is code-split: surfaces that only use emoji never load the lucide map.
 const LucideGlyph = React.lazy(() => import("./LucideGlyph"));
@@ -66,5 +66,5 @@ export const IconValueView: React.FC<Props> = ({ value, size = 20, className }) 
     );
   }
 
-  return <AssetRenderer value={raw} size={size} className={className} />;
+  return <AssetRenderer value={assetRendererValue(raw)} size={size} className={className} />;
 };

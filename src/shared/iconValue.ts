@@ -63,3 +63,19 @@ export function serializeIconValue(value: IconValue): string {
   if (value.kind === "emoji" && value.bg) out += `;bg=${encodeURIComponent(value.bg)}`;
   return out;
 }
+
+/** Emoji code points: pictographs, keycaps and the flag letters. */
+const EMOJI_RE = /\p{Extended_Pictographic}|\p{Regional_Indicator}|\u20e3/u;
+
+/**
+ * The value to hand to ui-collection's AssetRenderer. A bare emoji outside that
+ * library's own catalog (📕, 🥗, most of Unicode) parses there as "unknown" and
+ * renders nothing; marked `emoji:` it renders as the character. Catalog ids and
+ * legacy `page`/`table` icon names are not emoji and pass through untouched.
+ */
+export function assetRendererValue(value: string): string {
+  const raw = value.trim();
+  const parsed = parseIconValue(raw);
+  if (!parsed || parsed.kind !== "emoji" || parsed.bg || raw.startsWith("emoji:")) return raw;
+  return EMOJI_RE.test(parsed.ref) ? `emoji:${parsed.ref}` : raw;
+}
