@@ -60,7 +60,7 @@ export const SidebarNavItem: React.FC<SidebarNavItemProps> = ({
         type="button"
         onClick={onClick}
         className={cx(
-          "flex min-w-0 flex-1 cursor-pointer select-none items-center gap-2 rounded-[6px] text-base font-medium transition-colors duration-100",
+          "flex min-w-0 flex-1 cursor-pointer select-none items-center gap-2 rounded-[6px] text-base font-medium transition-colors duration-(--osio-dur-fast)",
           stateClass,
         )}
         style={{ paddingLeft: 0, paddingRight: 0, height: 28, minHeight: 27 }}
