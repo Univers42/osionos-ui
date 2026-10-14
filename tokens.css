@@ -124,6 +124,7 @@
   --osio-field-border-focus: var(--osio-accent);
   --osio-field-h: var(--osio-control-h-md);
   --osio-field-radius: var(--osio-radius-control);
+  --osio-toggle-off-bg: var(--osio-fg-subtle);
   --osio-tooltip-bg: var(--osio-fg-strong);
   --osio-tooltip-fg: var(--osio-bg-surface);
   --osio-tooltip-radius: var(--osio-radius-chip);
