@@ -62,7 +62,7 @@ export const Toggle: React.FC<ToggleProps> = ({
       style={{
         width: metrics.trackWidth,
         height: metrics.trackHeight,
-        backgroundColor: checked ? "var(--osio-accent)" : "var(--osio-bg-muted)",
+        backgroundColor: checked ? "var(--osio-accent)" : "var(--osio-toggle-off-bg)",
       }}
       onClick={toggle}
       onKeyDown={handleKeyDown}
