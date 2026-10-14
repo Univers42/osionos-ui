@@ -13,8 +13,9 @@
 import React from "react";
 
 import { cx } from "../shared/classNames";
+import { BUTTON_TONE_CLASS, type ButtonTone } from "./buttonTones";
 
-export type ButtonTone = "default" | "primary" | "danger" | "ghost";
+export type { ButtonTone };
 export type ButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -27,16 +28,6 @@ const SIZE_CLASS: Record<ButtonSize, string> = {
   sm: "h-[var(--osio-control-h-sm)] gap-1 px-2.5 text-[13px]",
   md: "h-[var(--osio-control-h-md)] gap-1.5 px-3 text-sm",
   lg: "h-[var(--osio-control-h-lg)] gap-2 px-4 text-sm",
-};
-
-const TONE_CLASS: Record<ButtonTone, string> = {
-  default:
-    "border border-[var(--osio-control-border)] bg-[var(--osio-bg-surface)] text-[var(--osio-fg-default)] hover:bg-[var(--osio-control-bg-hover)] hover:border-[var(--osio-border-strong)]",
-  primary:
-    "bg-[var(--osio-accent)] text-[var(--osio-accent-fg)] shadow-[var(--osio-e1)] hover:bg-[var(--osio-accent-hover)] hover:shadow-[var(--osio-e2)]",
-  danger:
-    "bg-[var(--osio-danger)] text-[var(--osio-accent-fg)] shadow-[var(--osio-e1)] hover:bg-[var(--osio-danger-hover)] hover:shadow-[var(--osio-e2)]",
-  ghost: "text-[var(--osio-fg-muted)] hover:bg-[var(--osio-control-bg-hover)] hover:text-[var(--osio-fg-default)]",
 };
 
 // Shared base: semantic control radius, token-driven motion, tactile press
@@ -56,7 +47,7 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => (
-  <button type={type} className={cx(BASE, SIZE_CLASS[size], TONE_CLASS[tone], className)} {...props}>
+  <button type={type} className={cx(BASE, SIZE_CLASS[size], BUTTON_TONE_CLASS[tone], className)} {...props}>
     {children}
   </button>
 );
