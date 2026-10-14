@@ -25,8 +25,7 @@ test('danger-subtle is danger text on a transparent fill with the control border
 
 test('danger-subtle tints with the danger colour on hover, through a token', () => {
   const hover = BUTTON_TONE_CLASS['danger-subtle'].split(' ').filter((name) => name.startsWith('hover:bg-'));
-  assert.equal(hover.length, 1);
-  assert.match(hover[0], /var\(--osio-danger\)/);
+  assert.deepEqual(hover, ['hover:bg-[var(--osio-danger-subtle-bg-hover)]']);
 });
 
 test('every tone is a row of the table and none reads a raw colour', () => {

@@ -11,6 +11,6 @@ export const BUTTON_TONE_CLASS: Record<ButtonTone, string> = {
   danger:
     "bg-[var(--osio-danger)] text-[var(--osio-accent-fg)] shadow-[var(--osio-e1)] hover:bg-[var(--osio-danger-hover)] hover:shadow-[var(--osio-e2)]",
   "danger-subtle":
-    "border border-[var(--osio-control-border)] bg-transparent text-[var(--osio-danger)] hover:bg-[color-mix(in_srgb,var(--osio-danger)_10%,transparent)] hover:border-[var(--osio-danger)]",
+    "border border-[var(--osio-control-border)] bg-transparent text-[var(--osio-danger)] hover:bg-[var(--osio-danger-subtle-bg-hover)] hover:border-[var(--osio-danger)]",
   ghost: "text-[var(--osio-fg-muted)] hover:bg-[var(--osio-control-bg-hover)] hover:text-[var(--osio-fg-default)]",
 };

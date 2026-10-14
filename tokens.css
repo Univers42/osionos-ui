@@ -118,6 +118,7 @@
   --osio-chip-radius: 9999px;
   --osio-control-bg-hover: var(--osio-bg-hover);
   --osio-control-border: var(--osio-border-default);
+  --osio-danger-subtle-bg-hover: color-mix(in srgb, var(--osio-danger) 10%, transparent);
   --osio-control-radius: var(--osio-radius-control);
   --osio-field-bg: var(--osio-bg-surface);
   --osio-field-border: var(--osio-border-strong);
