@@ -22,10 +22,10 @@ const LazyAnimatedTab = React.lazy(() => import("./AnimatedTab"));
 
 type TabId = "emoji" | "icons" | "animated" | "custom";
 const TABS: Array<{ id: TabId; label: string; icon: React.ReactNode }> = [
-  { id: "emoji", label: "Emoji", icon: <Smile size={15} /> },
-  { id: "icons", label: "Icons", icon: <Shapes size={15} /> },
-  { id: "animated", label: "GIFs", icon: <Clapperboard size={15} /> },
-  { id: "custom", label: "Custom", icon: <ImagePlus size={15} /> },
+  { id: "emoji", label: "Emoji", icon: <Smile size={16} /> },
+  { id: "icons", label: "Icons", icon: <Shapes size={16} /> },
+  { id: "animated", label: "GIFs", icon: <Clapperboard size={16} /> },
+  { id: "custom", label: "Custom", icon: <ImagePlus size={16} /> },
 ];
 
 interface Props {
