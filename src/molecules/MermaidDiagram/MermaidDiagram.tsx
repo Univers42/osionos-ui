@@ -365,7 +365,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
               aria-label="Fit diagram to view"
               title="Fit to view"
               onClick={fitToView}
-              className="h-7 min-w-[3rem] rounded-md px-1 font-mono text-[11px] tabular-nums text-[var(--osio-code-fg-muted)] transition-colors hover:bg-[var(--osio-code-btn-hover)] hover:text-[var(--osio-code-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--osio-accent)]/40"
+              className="h-7 min-w-[3rem] rounded-md px-1 font-mono text-2xs tabular-nums text-[var(--osio-code-fg-muted)] transition-colors hover:bg-[var(--osio-code-btn-hover)] hover:text-[var(--osio-code-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--osio-accent)]/40"
             >
               {Math.round(zoom * 100)}%
             </button>
