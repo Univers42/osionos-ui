@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 import React, { Suspense } from "react";
-import { AssetRenderer } from "@univers42/ui-collection";
-import { assetRendererValue, parseIconValue } from "../../shared/iconValue";
+import { drawableEmojiOf, parseIconValue } from "../../shared/iconValue";
+import { GlyphPlaceholder, LazyLegacyAssetRenderer } from "./LazyLegacyAssetRenderer";
 
 // Lucide rendering is code-split: surfaces that only use emoji never load the lucide map.
 const LucideGlyph = React.lazy(() => import("./LucideGlyph"));
@@ -25,8 +25,8 @@ interface Props {
 
 /**
  * Drop-in superset of AssetRenderer. Handles the picker's new forms — custom SVG/image (`img:`),
- * lucide icons (with optional color), emoji with a color chip — and delegates every legacy value
- * (plain emoji, `icon:<catalog>`, `url:…`) to AssetRenderer, so existing icons render unchanged.
+ * lucide icons (with optional color), emoji with or without a color chip — and delegates every
+ * legacy value (`icon:<catalog>`, a bare catalog id, `url:…`) to AssetRenderer, loaded on first use.
  */
 export const IconValueView: React.FC<Props> = ({ value, size = 20, className }) => {
   const raw = (value ?? "").trim();
@@ -40,10 +40,9 @@ export const IconValueView: React.FC<Props> = ({ value, size = 20, className }) 
   }
 
   if (parsed.kind === "icon") {
-    const placeholder = <span style={{ display: "inline-block", width: size, height: size }} />;
     return (
       <span className={className} style={{ display: "inline-flex", color: parsed.color }}>
-        <Suspense fallback={placeholder}>
+        <Suspense fallback={<GlyphPlaceholder size={size} />}>
           <LucideGlyph name={parsed.ref} size={size} color={parsed.color} />
         </Suspense>
       </span>
@@ -66,5 +65,22 @@ export const IconValueView: React.FC<Props> = ({ value, size = 20, className }) 
     );
   }
 
-  return <AssetRenderer value={assetRendererValue(raw)} size={size} className={className} />;
+  const emoji = drawableEmojiOf(parsed);
+  if (emoji !== null) {
+    // AssetRenderer's emoji box, drawn without its catalogs (which also left out every emoji
+    // they lack, skin-tone variants included).
+    return (
+      <span
+        className={className}
+        style={{
+          display: "inline-flex", alignItems: "center", justifyContent: "center",
+          width: size, height: size, fontSize: size, lineHeight: 1,
+        }}
+      >
+        {emoji}
+      </span>
+    );
+  }
+
+  return <LazyLegacyAssetRenderer value={raw} size={size} className={className} />;
 };

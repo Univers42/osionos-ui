@@ -55,6 +55,16 @@ export function parseIconValue(value?: string | null): IconValue | null {
   return { kind: "emoji", ref: base, bg };
 }
 
+// Ponytail: printable ASCII means a legacy value (a catalog id like "page", "emoji:rocket", a
+// bare URL); anything else is the glyph itself. A bare URL with non-ASCII characters is taken
+// for a glyph and drawn as text instead of an image.
+const LEGACY_EMOJI_REF = /^[\x20-\x7e]+$/;
+
+/** The emoji to draw as-is, or null for a value only ui-collection's AssetRenderer resolves. */
+export function drawableEmojiOf(value: IconValue): string | null {
+  return value.kind === "emoji" && !LEGACY_EMOJI_REF.test(value.ref) ? value.ref : null;
+}
+
 /** Build a stored icon string from its parts (inverse of parseIconValue). */
 export function serializeIconValue(value: IconValue): string {
   const ref = value.ref.trim();
@@ -62,20 +72,4 @@ export function serializeIconValue(value: IconValue): string {
   if (value.color) out += `;color=${encodeURIComponent(value.color)}`;
   if (value.kind === "emoji" && value.bg) out += `;bg=${encodeURIComponent(value.bg)}`;
   return out;
-}
-
-/** Emoji code points: pictographs, keycaps and the flag letters. */
-const EMOJI_RE = /\p{Extended_Pictographic}|\p{Regional_Indicator}|\u20e3/u;
-
-/**
- * The value to hand to ui-collection's AssetRenderer. A bare emoji outside that
- * library's own catalog (📕, 🥗, most of Unicode) parses there as "unknown" and
- * renders nothing; marked `emoji:` it renders as the character. Catalog ids and
- * legacy `page`/`table` icon names are not emoji and pass through untouched.
- */
-export function assetRendererValue(value: string): string {
-  const raw = value.trim();
-  const parsed = parseIconValue(raw);
-  if (!parsed || parsed.kind !== "emoji" || parsed.bg || raw.startsWith("emoji:")) return raw;
-  return EMOJI_RE.test(parsed.ref) ? `emoji:${parsed.ref}` : raw;
 }
