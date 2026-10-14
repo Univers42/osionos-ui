@@ -70,7 +70,7 @@ export const ColorSwatches: React.FC<{ value?: string; onChange: (color?: string
   return (
     <div className="border-b border-[var(--osio-border-default)] px-3 py-2.5">
       <div className="mb-1.5 flex items-center justify-between">
-        <span className="text-[11px] font-semibold uppercase tracking-wide text-[var(--osio-fg-subtle)]">Color</span>
+        <span className="text-xs font-medium text-[var(--osio-fg-muted)]">Color</span>
         {value ? (
           <button type="button" onClick={() => onChange(undefined)} className="text-[11px] text-[var(--osio-fg-muted)] hover:text-[var(--osio-fg-default)]">Reset</button>
         ) : null}
