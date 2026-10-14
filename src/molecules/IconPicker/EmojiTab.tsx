@@ -78,7 +78,7 @@ export const EmojiTab: React.FC<{ query: string; bg?: string; onPick: (emoji: st
             aria-label={i === 0 ? "No skin tone" : `Skin tone ${i}`}
             aria-pressed={tone === i}
             onClick={() => pickTone(i)}
-            className={`flex h-7 w-7 items-center justify-center rounded-md text-base leading-none transition-colors duration-[120ms] ${
+            className={`flex h-7 w-7 items-center justify-center rounded-md text-base leading-none transition-colors duration-(--osio-dur-fast) ${
               tone === i ? "bg-[var(--osio-bg-muted)] shadow-[inset_0_0_0_1px_var(--osio-border-strong)]" : "hover:bg-[var(--osio-bg-hover)]"
             }`}
           >
@@ -100,7 +100,7 @@ export const EmojiTab: React.FC<{ query: string; bg?: string; onPick: (emoji: st
                 type="button"
                 title={item.label ?? item.id}
                 onClick={() => onPick(item.value)}
-                className="flex h-8 w-8 items-center justify-center rounded-md text-xl leading-none transition-colors duration-[120ms] hover:bg-[var(--osio-bg-hover)]"
+                className="flex h-8 w-8 items-center justify-center rounded-md text-xl leading-none transition-colors duration-(--osio-dur-fast) hover:bg-[var(--osio-bg-hover)]"
                 style={bg ? { background: bg, borderRadius: 8 } : undefined}
               >
                 {item.value}

@@ -22,10 +22,10 @@ const LazyAnimatedTab = React.lazy(() => import("./AnimatedTab"));
 
 type TabId = "emoji" | "icons" | "animated" | "custom";
 const TABS: Array<{ id: TabId; label: string; icon: React.ReactNode }> = [
-  { id: "emoji", label: "Emoji", icon: <Smile size={15} /> },
-  { id: "icons", label: "Icons", icon: <Shapes size={15} /> },
-  { id: "animated", label: "GIFs", icon: <Clapperboard size={15} /> },
-  { id: "custom", label: "Custom", icon: <ImagePlus size={15} /> },
+  { id: "emoji", label: "Emoji", icon: <Smile size={16} /> },
+  { id: "icons", label: "Icons", icon: <Shapes size={16} /> },
+  { id: "animated", label: "GIFs", icon: <Clapperboard size={16} /> },
+  { id: "custom", label: "Custom", icon: <ImagePlus size={16} /> },
 ];
 
 interface Props {
@@ -71,7 +71,7 @@ export const IconPicker: React.FC<Props> = ({ current, initialQuery, onSelect, o
             key={t.id}
             type="button"
             onClick={() => { setTab(t.id); setQuery(""); }}
-            className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium transition-colors duration-[120ms] ${
+            className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium transition-colors duration-(--osio-dur-fast) ${
               tab === t.id ? "bg-[var(--osio-bg-muted)] text-[var(--osio-fg-strong)]" : "text-[var(--osio-fg-muted)] hover:bg-[var(--osio-bg-hover)]"
             }`}
           >
@@ -117,7 +117,7 @@ export const IconPicker: React.FC<Props> = ({ current, initialQuery, onSelect, o
           type="button"
           data-testid="emoji-picker-remove"
           onClick={() => { onRemove(); onClose(); }}
-          className="rounded-md px-2.5 py-1.5 text-xs font-medium text-[var(--osio-fg-muted)] transition-colors duration-[120ms] hover:bg-[var(--osio-bg-hover)] hover:text-[var(--osio-danger)]"
+          className="rounded-md px-2.5 py-1.5 text-xs font-medium text-[var(--osio-fg-muted)] transition-colors duration-(--osio-dur-fast) hover:bg-[var(--osio-bg-hover)] hover:text-[var(--osio-danger)]"
         >
           Remove icon
         </button>

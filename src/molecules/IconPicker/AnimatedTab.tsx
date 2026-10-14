@@ -49,7 +49,7 @@ const AnimatedTile: React.FC<{ item: AnimatedEmoji; onPick: (url: string) => voi
       onPointerLeave={() => setIsPlaying(false)}
       onFocus={() => setIsPlaying(true)}
       onBlur={() => setIsPlaying(false)}
-      className="flex h-8 w-8 items-center justify-center rounded-md transition-colors duration-[120ms] hover:bg-[var(--osio-bg-hover)]"
+      className="flex h-8 w-8 items-center justify-center rounded-md transition-colors duration-(--osio-dur-fast) hover:bg-[var(--osio-bg-hover)]"
     >
       <img src={isPlaying ? notoAnimatedUrl(item.cp) : notoStaticUrl(item.cp)} alt={item.name} width={26} height={26} loading="lazy" draggable={false} />
     </button>

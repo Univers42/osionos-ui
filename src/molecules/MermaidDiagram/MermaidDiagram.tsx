@@ -349,7 +349,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
             {fullscreen ? <X size={14} /> : <Maximize2 size={14} />}
           </button>
 
-          <div className="absolute bottom-2 right-2 flex items-center gap-0.5 rounded-lg border border-[var(--osio-code-border)] bg-[var(--osio-code-header-bg)] p-0.5 shadow-sm">
+          <div className="absolute bottom-2 right-2 flex items-center gap-0.5 rounded-lg border border-[var(--osio-code-border)] bg-[var(--osio-code-header-bg)] p-0.5 shadow-osio-e1">
             <button
               type="button"
               aria-label="Zoom out"
@@ -365,7 +365,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
               aria-label="Fit diagram to view"
               title="Fit to view"
               onClick={fitToView}
-              className="h-7 min-w-[3rem] rounded-md px-1 font-mono text-[11px] tabular-nums text-[var(--osio-code-fg-muted)] transition-colors hover:bg-[var(--osio-code-btn-hover)] hover:text-[var(--osio-code-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--osio-accent)]/40"
+              className="h-7 min-w-[3rem] rounded-md px-1 font-mono text-2xs tabular-nums text-[var(--osio-code-fg-muted)] transition-colors hover:bg-[var(--osio-code-btn-hover)] hover:text-[var(--osio-code-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--osio-accent)]/40"
             >
               {Math.round(zoom * 100)}%
             </button>
@@ -408,7 +408,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
         className="fixed inset-0 z-[10050] flex flex-col bg-[var(--osio-overlay)] p-4 motion-reduce:transition-none"
         data-code-theme={codeTheme}
       >
-        <div className="min-h-0 flex-1 overflow-hidden rounded-[var(--osio-radius-lg)] border border-[var(--osio-code-border)] shadow-2xl">
+        <div className="min-h-0 flex-1 overflow-hidden rounded-[var(--osio-radius-lg)] border border-[var(--osio-code-border)] shadow-osio-e5">
           {frame}
         </div>
       </div>,

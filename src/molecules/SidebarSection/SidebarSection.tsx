@@ -50,13 +50,13 @@ export const SidebarSection: React.FC<SidebarSectionProps> = ({
           <ChevronDown
             size={12}
             className={cx(
-              "shrink-0 text-[var(--osio-fg-subtle)] opacity-0 transition-transform duration-100 group-hover:opacity-100",
+              "shrink-0 text-[var(--osio-fg-subtle)] opacity-0 transition-transform duration-(--osio-dur-fast) group-hover:opacity-100",
               open ? "" : "-rotate-90",
             )}
           />
         </button>
 
-        <div className="flex items-center gap-0.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+        <div className="flex items-center gap-0.5 opacity-0 transition-opacity duration-(--osio-dur-fast) group-hover:opacity-100">
           {headerActions}
           {onMore ? (
             <IconButton

@@ -25,7 +25,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 // Canonical control heights (density system) — one height per size, everywhere.
 const SIZE_CLASS: Record<ButtonSize, string> = {
-  sm: "h-[var(--osio-control-h-sm)] gap-1 px-2.5 text-[13px]",
+  sm: "h-[var(--osio-control-h-sm)] gap-1 px-2.5 text-sm",
   md: "h-[var(--osio-control-h-md)] gap-1.5 px-3 text-sm",
   lg: "h-[var(--osio-control-h-lg)] gap-2 px-4 text-sm",
 };

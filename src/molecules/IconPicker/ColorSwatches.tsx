@@ -61,7 +61,7 @@ export function resolveColorName(arg: string): string | undefined {
 }
 
 const RAINBOW = "conic-gradient(from 210deg, #f43f5e, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #f43f5e)";
-const DOT = "h-6 w-6 rounded-full ring-1 ring-inset ring-[var(--osio-border-default)] transition-[box-shadow] duration-[120ms]";
+const DOT = "h-6 w-6 rounded-full ring-1 ring-inset ring-[var(--osio-border-default)] transition-[box-shadow] duration-(--osio-dur-fast)";
 const SELECTED = "ring-2 ring-[var(--osio-accent)] ring-offset-2 ring-offset-[var(--osio-bg-surface)]";
 
 export const ColorSwatches: React.FC<{ value?: string; onChange: (color?: string) => void }> = ({ value, onChange }) => {
@@ -72,7 +72,7 @@ export const ColorSwatches: React.FC<{ value?: string; onChange: (color?: string
       <div className="mb-1.5 flex items-center justify-between">
         <span className="text-xs font-medium text-[var(--osio-fg-muted)]">Color</span>
         {value ? (
-          <button type="button" onClick={() => onChange(undefined)} className="text-[11px] text-[var(--osio-fg-muted)] hover:text-[var(--osio-fg-default)]">Reset</button>
+          <button type="button" onClick={() => onChange(undefined)} className="text-2xs text-[var(--osio-fg-muted)] hover:text-[var(--osio-fg-default)]">Reset</button>
         ) : null}
       </div>
       <div className="flex flex-wrap items-center gap-2">
