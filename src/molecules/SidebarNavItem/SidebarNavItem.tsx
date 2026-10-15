@@ -54,16 +54,16 @@ export const SidebarNavItem: React.FC<SidebarNavItemProps> = ({
         "group relative flex w-full select-none items-center gap-2 rounded-[6px] text-base font-medium",
         stateClass,
       )}
-      style={{ paddingLeft, paddingRight: 8, height: 30, minHeight: 27 }}
+      style={{ paddingLeft, paddingRight: 8, height: 28, minHeight: 27 }}
     >
       <button
         type="button"
         onClick={onClick}
         className={cx(
-          "flex min-w-0 flex-1 cursor-pointer select-none items-center gap-2 rounded-[6px] text-base font-medium transition-colors duration-100",
+          "flex min-w-0 flex-1 cursor-pointer select-none items-center gap-2 rounded-[6px] text-base font-medium transition-colors duration-(--osio-dur-fast)",
           stateClass,
         )}
-        style={{ paddingLeft: 0, paddingRight: 0, height: 30, minHeight: 27 }}
+        style={{ paddingLeft: 0, paddingRight: 0, height: 28, minHeight: 27 }}
       >
         <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center opacity-70">
           {icon}

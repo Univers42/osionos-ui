@@ -26,7 +26,7 @@ import { clampTriggerAlignedMenuPosition } from "../hooks/viewportPosition";
  *   align?: "start" | "end"                    (default "start")
  *   className?: string
  *   children: React.ReactNode
- * Surface chrome matches Menu (elevated bg, 1px border, rounded-lg, shadow-menu).
+ * Surface chrome matches Menu: the overlay surface tokens.
  */
 export interface PopoverProps {
   anchorRef: React.RefObject<HTMLElement | null>;
@@ -77,7 +77,7 @@ export const Popover: React.FC<PopoverProps> = ({ anchorRef, open, onClose, alig
       ref={panelRef}
       style={style}
       className={cx(
-        "rounded-[var(--osio-radius-overlay)] border border-[var(--osio-border-default)] bg-[var(--osio-bg-elevated)] p-1 shadow-[var(--osio-e3)] outline-none animate-[osio-pop-in_var(--osio-dur-fast)_var(--osio-ease-emphasized)]",
+        "rounded-[var(--osio-overlay-radius)] border border-[var(--osio-overlay-border)] bg-[var(--osio-overlay-bg)] p-[var(--osio-overlay-padding)] shadow-[var(--osio-overlay-shadow)] outline-none animate-[osio-pop-in_var(--osio-dur-fast)_var(--osio-ease-emphasized)]",
         className,
       )}
     >

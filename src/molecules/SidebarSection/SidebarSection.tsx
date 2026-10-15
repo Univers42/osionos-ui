@@ -44,23 +44,24 @@ export const SidebarSection: React.FC<SidebarSectionProps> = ({
           onClick={() => setOpen((current) => !current)}
           className="-mx-1.5 flex h-full min-w-0 flex-1 items-center gap-1 rounded-[6px] px-1.5 hover:bg-[var(--osio-bg-hover)]"
         >
-          <span className="truncate text-xs font-medium leading-none text-[var(--osio-fg-subtle)]">
+          <span className="truncate text-[length:var(--osio-font-size-xs)] font-medium normal-case leading-none tracking-normal text-[var(--osio-fg-muted)]">
             {label}
           </span>
           <ChevronDown
             size={12}
             className={cx(
-              "shrink-0 text-[var(--osio-fg-subtle)] opacity-0 transition-transform duration-100 group-hover:opacity-100",
+              "shrink-0 text-[var(--osio-fg-subtle)] opacity-0 transition-transform duration-(--osio-dur-fast) group-hover:opacity-100",
               open ? "" : "-rotate-90",
             )}
           />
         </button>
 
-        <div className="flex items-center gap-0.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+        <div className="flex items-center gap-0.5 opacity-0 transition-opacity duration-(--osio-dur-fast) group-hover:opacity-100">
           {headerActions}
           {onMore ? (
             <IconButton
               size="xs"
+              label="Open menu"
               title="Open menu"
               onClick={(event) => {
                 event.stopPropagation();
@@ -73,6 +74,7 @@ export const SidebarSection: React.FC<SidebarSectionProps> = ({
           {onAdd ? (
             <IconButton
               size="xs"
+              label={`Add to ${label}`}
               title={`Add to ${label}`}
               onClick={(event) => {
                 event.stopPropagation();

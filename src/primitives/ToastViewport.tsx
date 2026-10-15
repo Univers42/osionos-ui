@@ -52,7 +52,7 @@ const ToastItem: React.FC<{ toast: Toast }> = ({ toast }) => {
         {toast.action ? (
           <button
             type="button"
-            className="mt-2 rounded px-0 text-sm font-medium text-[var(--osio-accent)] hover:underline"
+            className="mt-2 rounded-xs px-0 text-sm font-medium text-[var(--osio-accent)] hover:underline"
             onClick={() => {
               toast.action?.onClick();
               dismiss(toast.id);

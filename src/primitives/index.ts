@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+export * from "./Checkbox";
 export * from "./Dropdown";
 export * from "./Menu";
 export * from "./MiniTabs";
@@ -17,5 +18,6 @@ export * from "./Modal";
 export * from "./Popover";
 export * from "./ToastViewport";
 export * from "./Toggle";
+export * from "./Tooltip";
 export * from "./useSettingsSearchIndex";
 export * from "./useToastStore";
