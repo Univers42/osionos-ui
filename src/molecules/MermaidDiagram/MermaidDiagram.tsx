@@ -14,6 +14,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Maximize2, Minus, Plus, X } from "lucide-react";
 
+import { lockedMermaidConfig, sanitizeMermaidSource, stripForbiddenSvgNodes } from "./lockedMermaid";
+
 interface MermaidDiagramProps {
   chart: string;
   className?: string;
@@ -130,11 +132,13 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
         const mermaid = await loadMermaid();
         // Re-init each render: mermaid's config is global, so this is the
         // documented way to follow the card's dark/light theme live.
-        mermaid.initialize({
-          startOnLoad: false,
-          securityLevel: "strict",
-          theme: codeTheme === "light" ? "neutral" : "dark",
-        });
+        // The config is the LOCKED one (devil C108): strict, no HTML labels,
+        // and no key a `%%{init:…}%%` directive could rewrite.
+        mermaid.initialize(lockedMermaidConfig(codeTheme === "light" ? "neutral" : "dark"));
+
+        // The source comes from a shared page: scrub it BEFORE mermaid sees
+        // it — no directive, no click/call line, no remote url().
+        const safeSource = sanitizeMermaidSource(source);
 
         // Fonts must load before mermaid measures labels, else 0/NaN widths ->
         // dagre lays every node at NaN coordinates.
@@ -144,7 +148,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
         await new Promise((resolve) => requestAnimationFrame(resolve));
         if (cancelled || renderTokenRef.current !== currentToken) return;
 
-        const parsed = await mermaid.parse(source, { suppressErrors: true });
+        const parsed = await mermaid.parse(safeSource, { suppressErrors: true });
         if (cancelled || renderTokenRef.current !== currentToken) return;
         if (!parsed) {
           showSource(target, source);
@@ -152,7 +156,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
           return;
         }
 
-        const { svg, bindFunctions } = await mermaid.render(renderId, source, target);
+        const { svg } = await mermaid.render(renderId, safeSource, target);
         if (cancelled || renderTokenRef.current !== currentToken) {
           cleanupMermaidOrphans(renderId);
           return;
@@ -161,7 +165,9 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
           throw new Error("mermaid layout produced NaN coordinates");
         }
         target.innerHTML = svg;
-        bindFunctions?.(target);
+        // The belt after DOMPurify's braces: nothing in the rendered SVG may
+        // point out of the diagram (no img/image/a/foreignObject, no href).
+        stripForbiddenSvgNodes(target);
         // Render at NATURAL size. Forcing width:100% squeezed a large diagram into
         // the narrow pane until it was unreadable (needing ~600% zoom just to make
         // out a node). At natural size it stays legible and simply overflows the

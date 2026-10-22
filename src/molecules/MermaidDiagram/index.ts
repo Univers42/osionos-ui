@@ -11,3 +11,4 @@
 /* ************************************************************************** */
 
 export * from "./MermaidDiagram";
+export * from "./lockedMermaid";
