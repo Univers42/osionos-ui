@@ -164,10 +164,15 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
         if (/translate\(\s*undefined|[\s(,]NaN/.test(svg)) {
           throw new Error("mermaid layout produced NaN coordinates");
         }
-        target.innerHTML = svg;
         // The belt after DOMPurify's braces: nothing in the rendered SVG may
         // point out of the diagram (no img/image/a/foreignObject, no href).
-        stripForbiddenSvgNodes(target);
+        // It is scrubbed inside an inert <template> BEFORE it joins the page:
+        // innerHTML on a live element starts an <img> fetch at parse time,
+        // so a strip after insertion would come too late.
+        const inert = document.createElement("template");
+        inert.innerHTML = svg;
+        stripForbiddenSvgNodes(inert.content);
+        target.replaceChildren(inert.content);
         // Render at NATURAL size. Forcing width:100% squeezed a large diagram into
         // the narrow pane until it was unreadable (needing ~600% zoom just to make
         // out a node). At natural size it stays legible and simply overflows the
