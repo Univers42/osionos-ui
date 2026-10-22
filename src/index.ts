@@ -25,6 +25,9 @@ export * from "./molecules/IconPicker";
 export * from "./molecules/CodeSyntaxHighlight";
 export * from "./molecules/EmojiPicker";
 export * from "./molecules/MermaidDiagram";
+// The locked renderer (devil C108) is public: a host that draws a diagram
+// itself must scrub the source and fix the config the same way.
+export * from "./molecules/MermaidDiagram/lockedMermaid";
 export * from "./molecules/ConfirmDialog";
 export * from "./molecules/SidebarNavItem";
 export * from "./molecules/SidebarSection";
