@@ -16,6 +16,7 @@ import { createPortal } from "react-dom";
 import { cx } from "../shared/classNames";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import { clampTriggerAlignedMenuPosition } from "../hooks/viewportPosition";
+import { MEASURING_STYLE } from "../hooks/popoverMeasure";
 
 /**
  * Popover — thin portaled popover positioned against an anchor element.
@@ -39,7 +40,7 @@ export interface PopoverProps {
 
 export const Popover: React.FC<PopoverProps> = ({ anchorRef, open, onClose, align = "start", className, children }) => {
   const panelRef = useRef<HTMLDivElement | null>(null);
-  const [style, setStyle] = useState<React.CSSProperties>({ opacity: 0 });
+  const [style, setStyle] = useState<React.CSSProperties>(MEASURING_STYLE);
 
   useEscapeKey(onClose, open);
 
