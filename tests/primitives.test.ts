@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import { AVATAR_TINTS, avatarTint, initialsOf } from '../src/shared/initials.ts';
 import { tooltipPosition } from '../src/hooks/tooltipPosition.ts';
+import { MEASURING_STYLE } from '../src/hooks/popoverMeasure.ts';
 
 /**
  * Avatar and Tooltip render through React, so the host's e2e suite covers the
@@ -102,4 +103,10 @@ test('a tooltip keeps its preferred side when neither side has room', () => {
 test('gap and margin are adjustable', () => {
   const trigger = { top: 400, left: 0, width: 20, height: 20 };
   assert.deepEqual(tooltipPosition(trigger, tooltip, viewport, { gap: 10, margin: 20 }), { top: 360, left: 20, side: 'top' });
+});
+
+test('a popover is measured out of the page flow, so its first open lands under its button', () => {
+  // In the flow, the portaled panel is as wide as the page and the clamp puts it at the left edge.
+  assert.equal(MEASURING_STYLE.position, 'fixed');
+  assert.equal(MEASURING_STYLE.opacity, 0);
 });
