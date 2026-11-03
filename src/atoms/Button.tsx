@@ -47,7 +47,9 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => (
-  <button type={type} className={cx(BASE, SIZE_CLASS[size], BUTTON_TONE_CLASS[tone], className)} {...props}>
+  // data-osio-button: the theme's text case (--osio-button-transform) applies to action buttons only,
+  // never to a raw <button> that shows content such as a page title (osionos#290).
+  <button type={type} data-osio-button="" className={cx(BASE, SIZE_CLASS[size], BUTTON_TONE_CLASS[tone], className)} {...props}>
     {children}
   </button>
 );
