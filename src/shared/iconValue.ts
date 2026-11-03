@@ -73,3 +73,90 @@ export function serializeIconValue(value: IconValue): string {
   if (value.kind === "emoji" && value.bg) out += `;bg=${encodeURIComponent(value.bg)}`;
   return out;
 }
+
+export type StoredIcon =
+  | { type: "emoji"; value: string; bg?: string }
+  | { type: "icon"; name: string; color?: string }
+  | { type: "image"; url: string; color?: string };
+
+/** Type guard for StoredIcon objects. */
+export function isStoredIcon(value: unknown): value is StoredIcon {
+  if (typeof value !== "object" || value === null) return false;
+  const candidate = value as Record<string, unknown>;
+  if (candidate.type === "emoji") {
+    return typeof candidate.value === "string" && candidate.value.trim().length > 0;
+  }
+  if (candidate.type === "icon") {
+    return typeof candidate.name === "string" && candidate.name.trim().length > 0;
+  }
+  if (candidate.type === "image") {
+    return typeof candidate.url === "string" && candidate.url.trim().length > 0;
+  }
+  return false;
+}
+
+/**
+ * Parses either a legacy string or a StoredIcon object into canonical StoredIcon.
+ * Returns null if invalid or blank.
+ */
+export function parseStoredIcon(input?: unknown): StoredIcon | null {
+  if (isStoredIcon(input)) {
+    if (input.type === "emoji") {
+      const value = input.value.trim();
+      if (!value) return null;
+      const bg = input.bg?.trim();
+      return { type: "emoji", value, ...(bg ? { bg } : {}) };
+    }
+    if (input.type === "icon") {
+      const name = input.name.trim();
+      if (!name) return null;
+      const color = input.color?.trim();
+      return { type: "icon", name, ...(color ? { color } : {}) };
+    }
+    if (input.type === "image") {
+      const url = input.url.trim();
+      if (!url) return null;
+      const color = input.color?.trim();
+      return { type: "image", url, ...(color ? { color } : {}) };
+    }
+  }
+  if (typeof input === "string") {
+    const parsed = parseIconValue(input);
+    if (!parsed) return null;
+    if (parsed.kind === "emoji") {
+      return { type: "emoji", value: parsed.ref, ...(parsed.bg ? { bg: parsed.bg } : {}) };
+    }
+    if (parsed.kind === "icon") {
+      return { type: "icon", name: parsed.ref, ...(parsed.color ? { color: parsed.color } : {}) };
+    }
+    if (parsed.kind === "image") {
+      return { type: "image", url: parsed.ref, ...(parsed.color ? { color: parsed.color } : {}) };
+    }
+  }
+  return null;
+}
+
+/**
+ * Normalizes any icon representation (string or object) to a canonical StoredIcon.
+ * Alias/equivalent to parseStoredIcon.
+ */
+export function storedIconToCanonical(input?: unknown): StoredIcon | null {
+  return parseStoredIcon(input);
+}
+
+/**
+ * Serializes a StoredIcon into its backward-compatible string representation.
+ */
+export function serializeStoredIcon(icon: StoredIcon): string {
+  if (icon.type === "emoji") {
+    return serializeIconValue({ kind: "emoji", ref: icon.value, bg: icon.bg });
+  }
+  if (icon.type === "icon") {
+    return serializeIconValue({ kind: "icon", ref: icon.name, color: icon.color });
+  }
+  if (icon.type === "image") {
+    return serializeIconValue({ kind: "image", ref: icon.url, color: icon.color });
+  }
+  return "";
+}
+
