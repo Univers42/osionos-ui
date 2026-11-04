@@ -33,13 +33,13 @@ export const CustomTab: React.FC<{ onPick: (ref: string) => void }> = ({ onPick 
     <div className="h-full space-y-3 overflow-auto p-3">
       <label className="flex cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-[var(--osio-border-default)] px-3 py-3 text-sm text-[var(--osio-fg-muted)] hover:bg-[var(--osio-bg-hover)]">
         <Upload size={16} /> Upload an image or SVG
-        <input type="file" accept="image/*,.svg" className="hidden" onChange={onFile} />
+        <input name="icon-file" type="file" accept="image/*,.svg" className="hidden" onChange={onFile} />
       </label>
 
       <div className="space-y-1.5">
         <span className="text-xs font-medium text-[var(--osio-fg-muted)]">Paste an image / SVG URL</span>
         <div className="flex gap-2">
-          <input className={FIELD} placeholder="https://… or data:…" value={url} onChange={(e) => setUrl(e.target.value)} />
+          <input name="icon-url" className={FIELD} placeholder="https://… or data:…" value={url} onChange={(e) => setUrl(e.target.value)} />
           <button type="button" className={BTN} disabled={!url.trim()} onClick={() => onPick(url.trim())}>Use</button>
         </div>
       </div>
@@ -47,6 +47,7 @@ export const CustomTab: React.FC<{ onPick: (ref: string) => void }> = ({ onPick 
       <div className="space-y-1.5">
         <span className="text-xs font-medium text-[var(--osio-fg-muted)]">Paste raw &lt;svg&gt; markup</span>
         <textarea
+          name="icon-svg"
           className={`${FIELD} h-20 resize-none font-mono text-xs`}
           placeholder="<svg viewBox='0 0 24 24'>…</svg>"
           value={markup}
