@@ -133,6 +133,8 @@
   /* Typography */
   --osio-font-size-3xs: 10px;
   --osio-font-size-xs: 12px;
+  /* The text case of the Button atom ([data-osio-button]); a theme may set uppercase. */
+  --osio-button-transform: none;
 
   /* Layering */
   --osio-z-modal: 50;
