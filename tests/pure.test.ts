@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { cx } from '../src/shared/classNames.ts';
-import { parseIconValue, serializeIconValue, type IconValue } from '../src/shared/iconValue.ts';
+import { parseIconValue, serializeIconValue, type IconValue, isStoredIcon, parseStoredIcon } from '../src/shared/iconValue.ts';
 import { applyEmojiTone, EMOJI_SKIN_TONES } from '../src/shared/emojiTone.ts';
 
 /**
@@ -101,4 +101,18 @@ test('a leading variation selector is replaced, not kept alongside the modifier'
   const toned = applyEmojiTone('✌️', 1);
   const points = [...toned].map((c) => c.codePointAt(0));
   assert.deepEqual(points, [0x270c, EMOJI_SKIN_TONES[0]]);
+});
+
+test('isStoredIcon rejects malformed optional fields and parseStoredIcon safely handles them', () => {
+  // @ts-expect-error malformed optional field types
+  assert.equal(isStoredIcon({ type: 'icon', name: 'rocket', color: 42 }), false);
+  // @ts-expect-error malformed optional field types
+  assert.equal(isStoredIcon({ type: 'emoji', value: '🚀', bg: 123 }), false);
+  // @ts-expect-error malformed optional field types
+  assert.equal(isStoredIcon({ type: 'image', url: 'https://example.com/a.png', color: true }), false);
+
+  // parseStoredIcon returns null or falls back without throwing
+  assert.equal(parseStoredIcon({ type: 'icon', name: 'rocket', color: 42 }), null);
+  assert.equal(parseStoredIcon({ type: 'emoji', value: '🚀', bg: 123 }), null);
+  assert.equal(parseStoredIcon({ type: 'image', url: 'https://example.com/a.png', color: true }), null);
 });
