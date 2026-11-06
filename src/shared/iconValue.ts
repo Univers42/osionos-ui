@@ -84,13 +84,16 @@ export function isStoredIcon(value: unknown): value is StoredIcon {
   if (typeof value !== "object" || value === null) return false;
   const candidate = value as Record<string, unknown>;
   if (candidate.type === "emoji") {
-    return typeof candidate.value === "string" && candidate.value.trim().length > 0;
+    if (typeof candidate.value !== "string" || candidate.value.trim().length === 0) return false;
+    return candidate.bg === undefined || typeof candidate.bg === "string";
   }
   if (candidate.type === "icon") {
-    return typeof candidate.name === "string" && candidate.name.trim().length > 0;
+    if (typeof candidate.name !== "string" || candidate.name.trim().length === 0) return false;
+    return candidate.color === undefined || typeof candidate.color === "string";
   }
   if (candidate.type === "image") {
-    return typeof candidate.url === "string" && candidate.url.trim().length > 0;
+    if (typeof candidate.url !== "string" || candidate.url.trim().length === 0) return false;
+    return candidate.color === undefined || typeof candidate.color === "string";
   }
   return false;
 }
@@ -104,19 +107,19 @@ export function parseStoredIcon(input?: unknown): StoredIcon | null {
     if (input.type === "emoji") {
       const value = input.value.trim();
       if (!value) return null;
-      const bg = input.bg?.trim();
+      const bg = typeof input.bg === "string" ? input.bg.trim() : undefined;
       return { type: "emoji", value, ...(bg ? { bg } : {}) };
     }
     if (input.type === "icon") {
       const name = input.name.trim();
       if (!name) return null;
-      const color = input.color?.trim();
+      const color = typeof input.color === "string" ? input.color.trim() : undefined;
       return { type: "icon", name, ...(color ? { color } : {}) };
     }
     if (input.type === "image") {
       const url = input.url.trim();
       if (!url) return null;
-      const color = input.color?.trim();
+      const color = typeof input.color === "string" ? input.color.trim() : undefined;
       return { type: "image", url, ...(color ? { color } : {}) };
     }
   }
