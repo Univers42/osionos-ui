@@ -28,10 +28,13 @@ interface ToastStore {
   clear: () => void;
 }
 
-function toastId() {
-  return typeof crypto !== "undefined" && "randomUUID" in crypto
-    ? crypto.randomUUID()
-    : `toast-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+let toastCounter = 0;
+
+function toastId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `toast-${Date.now()}-${++toastCounter}`;
 }
 
 export const useToastStore = create<ToastStore>((set) => ({
