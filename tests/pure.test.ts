@@ -104,11 +104,8 @@ test('a leading variation selector is replaced, not kept alongside the modifier'
 });
 
 test('isStoredIcon rejects malformed optional fields and parseStoredIcon safely handles them', () => {
-  // @ts-expect-error malformed optional field types
   assert.equal(isStoredIcon({ type: 'icon', name: 'rocket', color: 42 }), false);
-  // @ts-expect-error malformed optional field types
   assert.equal(isStoredIcon({ type: 'emoji', value: '🚀', bg: 123 }), false);
-  // @ts-expect-error malformed optional field types
   assert.equal(isStoredIcon({ type: 'image', url: 'https://example.com/a.png', color: true }), false);
 
   // parseStoredIcon returns null or falls back without throwing
