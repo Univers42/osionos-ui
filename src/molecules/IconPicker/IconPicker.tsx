@@ -85,6 +85,7 @@ export const IconPicker: React.FC<Props> = ({ current, initialQuery, onSelect, o
         <div className="flex items-center gap-2 border-b border-[var(--osio-border-default)] px-3 py-2">
           <Search size={14} className="text-[var(--osio-fg-subtle)]" />
           <input
+            name="icon-search"
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}

@@ -11,6 +11,8 @@ export interface CheckboxProps {
   label?: React.ReactNode;
   /** Required when there is no visible label. */
   ariaLabel?: string;
+  /** The field's form name; DevTools flags a field with neither an id nor a name. */
+  name?: string;
   className?: string;
 }
 
@@ -31,9 +33,10 @@ const BOX_OFF = "border-[var(--osio-border-strong)] bg-[var(--osio-bg-surface)]"
  *   disabled?: boolean
  *   label?: React.ReactNode          visible text next to the box
  *   ariaLabel?: string               required when there is no visible label
+ *   name?: string                    form name, "checkbox" when omitted
  *   className?: string
  */
-export const Checkbox: React.FC<CheckboxProps> = ({ checked, onChange, indeterminate = false, disabled = false, label, ariaLabel, className }) => {
+export const Checkbox: React.FC<CheckboxProps> = ({ checked, onChange, indeterminate = false, disabled = false, label, ariaLabel, name = "checkbox", className }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -52,6 +55,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ checked, onChange, indetermi
     >
       <input
         ref={inputRef}
+        name={name}
         type="checkbox"
         className="peer sr-only"
         checked={checked}
