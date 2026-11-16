@@ -11,14 +11,19 @@
 /* ************************************************************************** */
 
 import React, { Suspense } from "react";
-import { drawableEmojiOf, parseIconValue } from "../../shared/iconValue";
+import {
+  drawableEmojiOf,
+  parseIconValue,
+  serializeStoredIcon,
+  type StoredIcon,
+} from "../../shared/iconValue";
 import { GlyphPlaceholder, LazyLegacyAssetRenderer } from "./LazyLegacyAssetRenderer";
 
 // Lucide rendering is code-split: surfaces that only use emoji never load the lucide map.
 const LucideGlyph = React.lazy(() => import("./LucideGlyph"));
 
 interface Props {
-  value?: string | null;
+  value?: string | StoredIcon | null;
   size?: number;
   className?: string;
 }
@@ -29,7 +34,8 @@ interface Props {
  * legacy value (`icon:<catalog>`, a bare catalog id, `url:…`) to AssetRenderer, loaded on first use.
  */
 export const IconValueView: React.FC<Props> = ({ value, size = 20, className }) => {
-  const raw = (value ?? "").trim();
+  const canonical = typeof value === "object" && value !== null ? serializeStoredIcon(value) : (value ?? "");
+  const raw = canonical.trim();
   const parsed = parseIconValue(raw);
   if (!parsed) return null;
 
