@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { avatarTint, initialsOf, type AvatarTint } from "../shared/initials";
 import { cx } from "../shared/classNames";
 
-export type AvatarSize = "xs" | "sm" | "md" | "lg";
+export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface AvatarProps {
   name: string;
@@ -17,6 +17,8 @@ const SIZE_CLASS: Record<AvatarSize, string> = {
   sm: "h-6 w-6 text-xs",
   md: "h-8 w-8 text-sm",
   lg: "h-10 w-10 text-base",
+  // Profile-page identity: the largest mark, 8 rem square.
+  xl: "h-32 w-32 text-3xl",
 };
 
 // Written out literally so the token-contract script sees every tint it reads.
