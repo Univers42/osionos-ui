@@ -16,6 +16,22 @@ import { Maximize2, Minus, Plus, X } from "lucide-react";
 
 import { lockedMermaidConfig, sanitizeMermaidSource, stripForbiddenSvgNodes } from "./lockedMermaid";
 
+const MIN_PANE_HEIGHT = 200;
+const MAX_SNUG_PANE_HEIGHT = 500;
+
+/** Pane height that hugs a freshly rendered diagram: its height once scaled to
+ *  the pane's width (never past 1.5x), plus breathing room, within the pane's
+ *  bounds. A wide, short flowchart no longer sits in a 500px void. */
+function snugPaneHeight(frame: HTMLElement | null, svg: SVGSVGElement | null, zoom: number): number {
+  if (!frame || !svg) return MAX_SNUG_PANE_HEIGHT;
+  const natural = svg.getBoundingClientRect();
+  if (natural.width <= 0 || natural.height <= 0) return MAX_SNUG_PANE_HEIGHT;
+  const width = natural.width / zoom;
+  const scale = Math.min(1.5, (frame.clientWidth - 16) / width);
+  const snug = Math.round((natural.height / zoom) * scale) + 64;
+  return Math.min(MAX_SNUG_PANE_HEIGHT, Math.max(MIN_PANE_HEIGHT, snug));
+}
+
 interface MermaidDiagramProps {
   chart: string;
   className?: string;
@@ -69,8 +85,9 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
   const [dragging, setDragging] = useState(false);
   // Inline pane height is user-resizable: a big diagram needs a taller viewport,
   // and the old fixed max-h-[74vh] made dragging to extend "just stop".
-  const [paneHeight, setPaneHeight] = useState(500);
+  const [paneHeight, setPaneHeight] = useState(MAX_SNUG_PANE_HEIGHT);
   const resizeRef = useRef<{ y: number; h: number } | null>(null);
+  const userSizedRef = useRef(false);
 
   // Refs mirror zoom/offset so the native wheel listener reads live values.
   const zoomRef = useRef(zoom);
@@ -187,7 +204,8 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
         // Center + fit the whole diagram once layout settles (next frame).
         requestAnimationFrame(() => {
           if (cancelled || renderTokenRef.current !== currentToken) return;
-          fitToView();
+          if (!fullscreen && !userSizedRef.current) setPaneHeight(snugPaneHeight(frameRef.current, svgEl, zoomRef.current || 1));
+          requestAnimationFrame(fitToView);
         });
       } catch {
         cleanupMermaidOrphans(renderId);
@@ -302,7 +320,8 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
   const onResizeMove = useCallback((event: React.PointerEvent) => {
     const r = resizeRef.current;
     if (!r) return;
-    setPaneHeight(Math.max(200, r.h + (event.clientY - r.y)));
+    userSizedRef.current = true;
+    setPaneHeight(Math.max(MIN_PANE_HEIGHT, r.h + (event.clientY - r.y)));
   }, []);
   const onResizeEnd = useCallback(() => {
     if (!resizeRef.current) return;
@@ -321,7 +340,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
         fullscreen ? "h-full" : "",
         rendered ? (dragging ? "cursor-grabbing" : "cursor-grab touch-none") : "",
       ].join(" ")}
-      style={fullscreen ? undefined : { height: paneHeight, minHeight: 200 }}
+      style={fullscreen ? undefined : { height: paneHeight, minHeight: MIN_PANE_HEIGHT }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={endDrag}
