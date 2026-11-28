@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 // The picker (emoji list, color swatches, virtual list: ~116 KB beyond what boot already loaded,
-// production build 2026-10-13) is off the boot path: it loads once the browser is idle, so the
-// first open does not wait on it either.
+// production build 2026-10-13) is off the boot path: it loads the first time one is opened,
+// so the sign-in screen and a home that never opens a picker never download it.
 import React, { Suspense } from "react";
 import type { IconPicker as EagerIconPicker } from "./IconPicker";
 
@@ -20,14 +20,6 @@ type IconPickerProps = React.ComponentProps<typeof EagerIconPicker>;
 
 const loadIconPicker = () => import("./IconPicker");
 const LoadedIconPicker = React.lazy(() => loadIconPicker().then((module) => ({ default: module.IconPicker })));
-
-// Ponytail: a page that is never idle within 4 s loads it then anyway; a failed warm-up is
-// dropped because the first open imports again and reports its own failure.
-if (globalThis.window !== undefined) {
-  const warm = (): void => { loadIconPicker().catch(() => undefined); };
-  if (typeof globalThis.requestIdleCallback === "function") globalThis.requestIdleCallback(warm, { timeout: 4000 });
-  else globalThis.setTimeout(warm, 2000);
-}
 
 export const IconPicker: React.FC<IconPickerProps> = (props) => (
   <Suspense fallback={null}>
